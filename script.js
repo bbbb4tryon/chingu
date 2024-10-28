@@ -1,41 +1,63 @@
+//Simple cache
+const weatherDataCache = {};
+const cacheTimeouts = {};
+const CACHE_DURATION = 30 * 60 * 1000;
 
-document.getElementByID("packingForm").addEventListener("submit", function(e){
-    e.preventDefault();
+//Cache functions
+function setWeatherCache(location, data) {
+    weatherDataCache[location] = data;
 
-    const location = document.getElementById("location").value
-    const adveture = document.getElementById("adventure").value
-    const time = document.getElmentById("weather").value
+    if (cacheTimeouts[location]) {
+        clearTimeout(cacheTimeouts[location]);
+    }
 
-    const simulatedPackingSuggestions = getPackingList(adventure, weather);
+    cacheTimeouts[location] = setTimeout(() => {
+        delete weatherDataCache[location];
+        delete cacheTimeouts[location];
+    }, CACHE_DURATION);
+}
+function getWeatherCache(location) {
+    return weatherDataCache[location];
+}
 
-    const packingList = document.getElementById("list");
-    packingList.innerHTML = ""; // clears previous packingList
-    packingSuggestions.forEach(item => {
-        const listItem = document.createElement("li")
-        listItem.textContext = item;
-        packingList.appendChild(listItem)
+//Constants for base and training items
+const BASE_ITEMS = [
+    "Liquids: 1 liter (32oz) of liquid per 1 hour of activity",
+    "Snacks: 2:1 carbohydrates to protein",
+    "ID and Emergency Contact Information" 
+];
+const ACTIVITY_ITEMS = {
+    running: ["Socks", "Sunglasses"],
+    swimming: ["Goggles", "Towel"],
+    biking: ["Sunglasses", "Helmet"]
+}
+
+//DOM elements
+const citySelect = document.getElementById('citySelect');
+const activityButtons = document.querySelectorAll('.activity-btn');
+const suppliesContainer = document.getElementById('suppliesContainer');
+const baseItemsList = document.getElementById('baseItems');
+const recommendedItemsList = document.getElementById('recommendedItems');
+
+//Current state
+let currentActivity = 'running';
+
+//Event Listeners
+citySelect.addEventListener('change', updateSupplies);
+
+activityButtons.forEach(button => {
+    button.addEventListener('click', (e) => {
+        //update styling
+        activityButtons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+
+        //update activity; refresh supplies list
+        currentActivity = button.dataset.actvity;
+        updateSupplies();
     });
 });
 
-function getPackingList(adventure, time ) {
-    const baseItems = ["1 Liter Water per 1 hour activity snacks", "snacks", "hat"]
-    if (adventure == swimming) {
-        baseItems.push("googles")
-    } else if (adventure == biking) {
-        baseItems.push("electrolytes", "sunglasses")
-    } else if (adventure == running) {
-        baseItems.push("running socks")
-    }
 
-    if (weather == "cold") {
-baseItems.push("full gloves")
-    } else if (weather == "warmer") {
-baseItems.push("spray sunscreen")
-    }
 
-    return baseItems
-}
-
-function fetchWeatherCondition(location) {
-    const fakeapiKey = 'REPLACE_WITH YOURACTUAL_KEY'
-}
+// Initialize when DOM is loaded
+document.addEventListener('DOMContentLoaded', initialize);

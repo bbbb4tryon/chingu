@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Triathlon Training: Minimum Supply Assistant</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="./style.css">
+        <script src="" async defer></script>
+    </head>
+    <body>
+        <div class="container">
+            <h1>At-A-Minimum</h1>
+            <h3>Adjusts your supplies based on the weather after your specific training event</h3>
+
+            <form id="formValues">
+                <!-- <fieldset> -->
+                    <div class="form-group">
+                    <legend>
+                        <label for="location">Enter Your Training Location</label>
+                        <input type="text" id="location" name="location" required>
+                    </legend>
+                    </div>
+                    <div class="form-group">
+                        <label for="training">Training Type</label>
+                        <select id="training" name="training" required>
+                            <option value="Swimming">Swimming</option>
+                            <option value="Biking">Biking</option>
+                            <option value="Running">Running</option>
+                        </select>
+                    </div>
+                <div class="form-group" id="temperatureComparison">
+                    <label>Expected Weather Changes in Three-Hours</label>
+                    <div class="temp-buttons">
+                        <button type:="button" class="temp-icon cold" data-temp="colder">
+                            <span class="temp-icon">❅</span>                
+                            <span class="temp-text">Colder</span>
+                        </button>
+                        <button type:="button" class="temp-icon warm" data-temp="warmer">
+                            <span class="temp-icon">☀️</span>                
+                            <span class="temp-text">Warmer</span>
+                        </button>
+                    </div>
+                </div>
+
+                
+                <button type="submit" class="submit-button" name="see_supplies">See Supplies</button>
+                <!-- </fieldset> -->
+            </form>
+            
+            <div  id="supplyList">
+                <h2><em>Your Base Items always include these Minimum Supplies</em></h2>
+                <div id="weatherInfo">                    
+                    <p id="suppliesText">Your training location will be ${weatherThen} than now. Your minimum supply list for conditions should include</p>
+                </div>
+                <p id="supplyList"></p>
+                <ul id="list"></ul>
+                <script>
+                    const baseItems = getSupplyList().baseItems;
+                    const supplyList = document.getElementById("list");
+                    baseItems.forEach(item => {
+                        const listItem = document.createElement("li");
+                        listItem.textContent = item;
+                        supplyList.appendChild(listItem);
+                    });
+                </script>
+            </div>
+        </div>
+        <script src="script.js"></script>
+    </body>
+</html>
