@@ -1,5 +1,7 @@
 # chingu
-# Triathlon Training Supply Assistant
+<!-- Title with app's light blue -->
+<span style="color: #48c0ff">Triathlon Training Supply Assistant</span>
+<div align="center">
 
 When you step outside your door to a beautiful day. You wear the short running shorts and a light tanktop.
 
