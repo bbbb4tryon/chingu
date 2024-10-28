@@ -1,72 +1,53 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Triathlon Training: Minimum Supply Assistant</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="./style.css">
-        <script src="" async defer></script>
-    </head>
-    <body>
-        <div class="container">
-            <h1>At-A-Minimum</h1>
-            <h3>Adjusts your supplies based on the weather after your specific training event</h3>
-
-            <form id="formValues">
-                <!-- <fieldset> -->
-                    <div class="form-group">
-                    <legend>
-                        <label for="location">Enter Your Training Location</label>
-                        <input type="text" id="location" name="location" required>
-                    </legend>
-                    </div>
-                    <div class="form-group">
-                        <label for="training">Training Type</label>
-                        <select id="training" name="training" required>
-                            <option value="Swimming">Swimming</option>
-                            <option value="Biking">Biking</option>
-                            <option value="Running">Running</option>
-                        </select>
-                    </div>
-                <div class="form-group" id="temperatureComparison">
-                    <label>Expected Weather Changes in Three-Hours</label>
-                    <div class="temp-buttons">
-                        <button type:="button" class="temp-icon cold" data-temp="colder">
-                            <span class="temp-icon">❅</span>                
-                            <span class="temp-text">Colder</span>
-                        </button>
-                        <button type:="button" class="temp-icon warm" data-temp="warmer">
-                            <span class="temp-icon">☀️</span>                
-                            <span class="temp-text">Warmer</span>
-                        </button>
-                    </div>
-                </div>
-
-                
-                <button type="submit" class="submit-button" name="see_supplies">See Supplies</button>
-                <!-- </fieldset> -->
-            </form>
+<body>
+    <div class="container">
+        <div class="card">
+            <header class="card-header">
+                <h1>Training Supply Assistant</h1>
+            </header>
             
-            <div  id="supplyList">
-                <h2><em>Your Base Items always include these Minimum Supplies</em></h2>
-                <div id="weatherInfo">                    
-                    <p id="suppliesText">Your training location will be ${weatherThen} than now. Your minimum supply list for conditions should include</p>
+            <div class="card-content">
+                <div class="form-group">
+                    <select id="citySelect" required>
+                        <option value="">Select your city</option>
+                        <option value="Denver">Denver</option>
+                        <option value="Sacramento">Sacramento</option>
+                        <option value="Seattle">Seattle</option>
+                        <option value="Dallas">Dallas</option>
+                        <option value="Helena">Helena</option>
+                        <option value="Cleveland">Cleveland</option>
+                        <option value="Des Moines">Des Moines</option>
+                        <option value="Sarasota">Sarasota</option>
+                        <option value="Washington DC">Washington DC</option>
+                        <option value="Boston">Boston</option>
+                        <option value="Albany">Albany</option>
+                        <option value="Portland">Portland</option>
+                    </select>
+
+                    <div class="activity-buttons">
+                        <button class="activity-btn" data-activity="running">Running</button>
+                        <button class="activity-btn" data-activity="swimming">Swimming</button>
+                        <button class="activity-btn" data-activity="biking">Biking</button>
+                    </div>
                 </div>
-                <p id="supplyList"></p>
-                <ul id="list"></ul>
-                <script>
-                    const baseItems = getSupplyList().baseItems;
-                    const supplyList = document.getElementById("list");
-                    baseItems.forEach(item => {
-                        const listItem = document.createElement("li");
-                        listItem.textContent = item;
-                        supplyList.appendChild(listItem);
-                    });
-                </script>
+
+                <div id="suppliesContainer" class="hidden">
+                    <div class="supplies-section">
+                        <h3>Always with you</h3>
+                        <ul id="baseItems" class="supplies-list">
+                            <!-- Base items will be inserted here by JavaScript -->
+                        </ul>
+                    </div>
+
+                    <div class="supplies-section">
+                        <h3>Recommended Supplies</h3>
+                        <ul id="recommendedItems" class="supplies-list">
+                            <!-- Recommended items will be inserted here by JavaScript -->
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
-        <script src="script.js"></script>
-    </body>
+    </div>
+    <script src="script.js"></script>
+</body>
 </html>
