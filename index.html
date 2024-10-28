@@ -1,9 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Triathlon Training Supply Assistant</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="style.css">
+</head>
 <body>
     <div class="container">
         <div class="card">
             <header class="card-header">
-                <h1>Training Supply Assistant</h1>
+                <h1>Triathlon Training Supply Assistant</h1>
             </header>
+            
             
             <div class="card-content">
                 <div class="form-group">
@@ -21,22 +32,63 @@
                         <option value="Boston">Boston</option>
                         <option value="Albany">Albany</option>
                         <option value="Portland">Portland</option>
+
                     </select>
 
+                    <div class="weather-display">
+                        <h3 id="selectedCity" class="city-title"></h3>
+                        <div class="temp-details">
+                            <p id="currentTemp" class="temp-info"></p>
+                            <p id="futureTemp" class="temp-info"></p>
+                            <p id="tempTrend" class="trend"></p>
+                        </div>
+                    </div>
+
                     <div class="activity-buttons">
-                        <button class="activity-btn" data-activity="running">Running</button>
-                        <button class="activity-btn" data-activity="swimming">Swimming</button>
-                        <button class="activity-btn" data-activity="biking">Biking</button>
+                        <button 
+                            class="activity-btn active" 
+                            data-activity="running"
+                            role="button"
+                            aria-pressed="true"
+                            aria-label="Select training running"
+                            >Running
+                        </button>
+                        <button 
+                        class="activity-btn" 
+                        data-activity="swimming"
+                        role="button"
+                        aria-pressed="false"
+                        aria-label="Select training swimming"
+                        >Swimming
+                    </button>
+                        <button 
+                        class="activity-btn" 
+                        data-activity="biking"
+                        role="button"
+                        aria-pressed="false"
+                        aria-label="Select training biking"
+                        >Biking
+                    </button>
                     </div>
                 </div>
 
-                <div id="suppliesContainer" class="hidden">
+                <div id="weatherInfo" class="hidden">
+                    <h2 id="selectedCity"></h2>
+                    <p id="currentTemp"></p>
+                    <p id="futureTemp"></p>
+                    <p id="tempTrend" class="trend"></p>
+                </div>
+
+                <div id="suppliesContainer">
                     <div class="supplies-section">
-                        <h3>Always with you</h3>
-                        <ul id="baseItems" class="supplies-list">
-                            <!-- Base items will be inserted here by JavaScript -->
+                        <h3>Always with You:</h3>
+                        <ul class="supplies-list">
+                            <li>Liquids: 1 liter (32oz) of liquid per 1 hour of activity</li>
+                            <li>Snacks: 2:1 carbohydrates to protein</li>
+                            <li>ID and Emergency Contact Information</li>
                         </ul>
                     </div>
+                </div>
 
                     <div class="supplies-section">
                         <h3>Recommended Supplies</h3>
