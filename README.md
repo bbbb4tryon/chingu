@@ -1,5 +1,5 @@
 # chingu
-##Triathlon Training Supply Assistant
+## Triathlon Training Supply Assistant
 
 When you step outside your door to a beautiful day. You wear the short running shorts and a light tanktop.
 
