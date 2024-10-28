@@ -208,7 +208,7 @@ select {
 }
 
 .supplies-list li {
-    color: var(--mountainGray);
+    color: var(--sand);
     margin: 0.5rem 0;
     line-height: 1.4;
 }
