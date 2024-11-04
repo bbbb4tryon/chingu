@@ -1,24 +1,33 @@
-// //Simple cache
-// const weatherDataCache = {};
-// const cacheTimeouts = {};
-// const CACHE_DURATION = 30 * 60 * 1000;
+// Simple Cache configuration
+const CACHE_DURATION = 30 * 60 * 1000; // 30 minutes
+const weatherDataCache = new Map(); // Using Map instead of object for better key-value handling
 
-// //Cache functions
-// function setWeatherCache(location, data) {
-//     weatherDataCache[location] = data;
+class WeatherCache {
+    static set(location, data) {
+        const cacheEntry = {
+            data,
+            timestamp: Date.now()
+        };
+        
+        weatherDataCache.set(location, cacheEntry);
+    }
 
-//     if (cacheTimeouts[location]) {
-//         clearTimeout(cacheTimeouts[location])
-//     }
+    static get(location) {
+        const cached = weatherDataCache.get(location);
+        if (!cached) return null;
+        
+        // Check if cache is expired
+        if (Date.now() - cached.timestamp > CACHE_DURATION) {
+            weatherDataCache.delete(location);
+            return null;
+        }
+        return cached.data;
+    }
 
-//     cacheTimeouts[location] = setTimeout(() => {
-//         delete weatherDataCache[location]
-//         delete cacheTimeouts[location]
-//     }, CACHE_DURATION)
-// }
-// function getWeatherCache(location) {
-//     return weatherDataCache[location]
-// }
+    static clear() {
+        weatherDataCache.clear();
+    }
+}
 
 //Constants for base and training items
 const BASE_ITEMS = [
@@ -73,14 +82,6 @@ function handleActivityClick(e) {
 // Add click handlers to activity buttons
 activityButtons.forEach(button => {
     button.addEventListener('click', handleActivityClick);
-    
-    // Keyboard support (accessibility)
-    button.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            button.click();
-        }
-
 //Keyboard support (accessibility)
         button.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' || e.key === ' ') {
@@ -88,29 +89,47 @@ activityButtons.forEach(button => {
                 button.click()
             }
         })
-    })
 })
 
 //Fetch weather data
 async function fetchWeatherCondition(location) {
-    const apiKey = 'cdf24967b173c63d86dbc0608e437c3b';
-    const url = `https://api.openweathermap.org/data/2.5/forecast?q=${location}&appid=${apiKey}&units=metric`;
-    
+
+    // Check cache first
+    const cachedData = WeatherCache.get(location);
+    if (cachedData) {
+        console.log("Returning cached data for: ", location);   
+        return cachedData;
+    }
+    //If not in cache, fetch new data
+    //(free proxy from OpenWeather - api not exposed)
+    const PROXY_URL = 'https://cors-anywhere.herokuapp.com/';
+    const WEATHER_URL = `https://api.openweathermap.org/data/2.5/forecast?q=${location}&appid=${process.env.API_KEY}&units=metric`;
     try {
-        const response = await fetch(url);
+        const response = await fetch(PROXY_URL + WEATHER_URL);
         if (!response.ok) throw new Error(`Response status: ${response.status}`);
 
         const data = await response.json();
         
-        // Extract current and future temperatures
-        const currentTemp = Math.round(data.list[0].main.temp * 9/5 + 32); // Convert to Fahrenheit
-        const futureTemp = Math.round(data.list[1].main.temp * 9/5 + 32);
+    //    // Extract current and future temperatures
+    //     const currentTemp = Math.round(data.list[0].main.temp * 9/5 + 32); // Convert to Fahrenheit
+    //     const futureTemp = Math.round(data.list[1].main.temp * 9/5 + 32);
         
-        return {
-            current: currentTemp,
-            future: futureTemp,
+    //     return {
+    //         current: currentTemp,
+    //         future: futureTemp,
+    //         condition: data.list[0].weather[0].main
+    //     };
+          // Process the weather data
+          const weatherData = {
+            current: Math.round(data.list[0].main.temp * 9/5 + 32),
+            future: Math.round(data.list[1].main.temp * 9/5 + 32),
             condition: data.list[0].weather[0].main
         };
+
+        // Store in cache before returning
+        WeatherCache.set(location, weatherData);
+
+        return weatherData
     } catch (error) {
         console.error(`Error fetching weather: ${error.message}`);
         return null;
